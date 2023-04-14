@@ -38,6 +38,9 @@ def get_prompt():
         ("Execute Shell Command, non-interactive commands only", "execute_shell", { "command_line": "<command_line>"}),
         ("Task Complete (Shutdown)", "task_complete", {"reason": "<reason>"}),
         ("Generate Image", "generate_image", {"prompt": "<prompt>"}),
+        ("Download Recent Papers from ArXiv", "arxiv", {"query": "<query>", "number": "<number>"}),
+        ("Download Single Paper by ID from ArXiv", "arxiv_single", {"paper_id": "<paper_id>"}),
+        ("Summarize a PDF File", "summarize_pdf", {"filename": "<filename>", "question": "<what_you_want_to_find_in_pdf>"}),
         ("Do Nothing", "do_nothing", {}),
     ]
 

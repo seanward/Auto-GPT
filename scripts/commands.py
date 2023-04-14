@@ -1,8 +1,10 @@
 import browse
+import arxiv
 import json
 from memory import get_memory
 import datetime
 import agent_manager as agents
+from summarize_pdf import summarize_pdf
 import speak
 from config import Config
 import ai_functions as ai
@@ -13,6 +15,7 @@ from image_gen import generate_image
 from duckduckgo_search import ddg
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from arxiv_command import download_arxiv_paper_by_id, download_recent_arxiv_papers
 
 cfg = Config()
 
@@ -91,6 +94,12 @@ def execute_command(command_name, arguments):
             return delete_file(arguments["file"])
         elif command_name == "search_files":
             return search_files(arguments["directory"])
+        elif command_name == "arxiv":
+            return download_recent_arxiv_papers(arguments["query"], arguments["number"])
+        elif command_name == "arxiv_single":
+            return download_arxiv_paper_by_id(arguments["paper_id"])
+        elif command_name == "summarize_pdf":
+            return summarize_pdf(arguments["filename"], arguments["question"])
         elif command_name == "browse_website":
             return browse_website(arguments["url"], arguments["question"])
         # TODO: Change these to take in a file rather than pasted code, if
@@ -179,9 +188,9 @@ def browse_website(url, question):
     summary = get_text_summary(url, question)
     links = get_hyperlinks(url)
 
-    # Limit links to 5
-    if len(links) > 5:
-        links = links[:5]
+    # Limit links to 50
+    if len(links) > 50:
+        links = links[:50]
 
     result = f"""Website Content Summary: {summary}\n\nLinks: {links}"""
 
